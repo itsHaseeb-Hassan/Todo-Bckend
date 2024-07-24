@@ -20,6 +20,10 @@ app.use(express.urlencoded({extended:false}))
 app.options('*', cors(corsconfig))
 app.use(cors(corsconfig))
 
+app.get('/',(req,res)=>{
+    res.send('Hello this is my Todo Application');
+})
+
 app.use('/api/users',userRouter)
 app.use('/api/todos',todoRouter)
 
