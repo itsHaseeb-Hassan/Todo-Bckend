@@ -21,11 +21,7 @@ app.options('*', cors(corsconfig))
 app.use(cors(corsconfig))
 
 
-connectDB().then(()=>{
-    app.listen(process.env.PORT,()=>console.log(`Server is running on port ${process.env.PORT}`))
-}).catch((error)=>{
-    console.log(`Error:${error.message}`)
-})
+
 
 app.get('/',(req,res)=>{
     res.send('Hello this is my Todo Application');
@@ -33,6 +29,8 @@ app.get('/',(req,res)=>{
 
 app.use('/api/users',userRouter)
 app.use('/api/todos',todoRouter)
+
+connectDB()
 
 
 
