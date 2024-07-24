@@ -13,5 +13,5 @@
         "methods":["GET","POST","DELETE","UPDATE","PUT","PATCH","OPTIONS"]
       }
     ]
-    
   }
+    
