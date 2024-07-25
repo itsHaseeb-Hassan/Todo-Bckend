@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 import userRouter from './routes/userRoute.js';
 import todoRouter from './routes/todoRoute.js';
 import connectDB from './config/db/db.js';
-import mongoose from 'mongoose';
 import cors from 'cors';
 
 dotenv.config();
@@ -54,7 +53,6 @@ app.use('/api/todos', todoRouter);
 
 app.get("/checkdb", async(req, res) => {
     try {
-        await mongoose.connect();
            const db = connectDB();
            await db.command({ ping: 1 });
            res.json({ status: 'Connected to MongoDB' });
