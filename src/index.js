@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import userRouter from './routes/userRoute.js';
 import todoRouter from './routes/todoRoute.js';
 import connectDB from './config/db/db.js';
+import mongoose from 'mongoose';
 import cors from 'cors';
 
 dotenv.config();
