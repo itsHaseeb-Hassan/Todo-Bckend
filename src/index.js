@@ -17,7 +17,7 @@ const app=express()
 
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
-app.options('*', cors(corsconfig))
+// app.options('*', cors(corsconfig))
 app.use(cors(corsconfig))
 
 
