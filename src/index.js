@@ -18,10 +18,6 @@ app.use(cors({
     credentials: true // Allow cookies to be sent with requests
 }));
 
-app.get('/', (req, res) => {
-    res.send('Hello, this is my Todo Application');
-});
-
 // Detailed logging middleware
 app.use((req, res, next) => {
     const start = Date.now();
@@ -32,17 +28,26 @@ app.use((req, res, next) => {
     next();
 });
 
+app.get('/', (req, res) => {
+    res.send('Hello, this is my Todo Application');
+});
+
 app.use('/api/users', userRouter);
 app.use('/api/todos', todoRouter);
 
-connectDB().then(() => {
-    app.listen(process.env.PORT, () => {
-        console.log(`Server is running on port ${process.env.PORT}`);
-    });
-}).catch(error => {
-    console.error('Failed to connect to the database:', error);
-    process.exit(1); // Exit the process with failure
-});
+const startServer = async () => {
+    try {
+        await connectDB();
+        app.listen(process.env.PORT, () => {
+            console.log(`Server is running on port ${process.env.PORT}`);
+        });
+    } catch (error) {
+        console.error('Failed to connect to the database:', error);
+        process.exit(1); // Exit the process with failure
+    }
+};
+
+startServer();
 
 // Error handling middleware
 app.use((err, req, res, next) => {
