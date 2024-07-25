@@ -6,9 +6,9 @@ import connectDB from './config/db/db.js'
 import cors from 'cors'
 
 const corsconfig={
-   origin:"*",
-   Credentials:true,
-   methods:["GET","POST","DELETE","UPDATE","PUT","PATCH"]
+        origin: 'http://localhost:5173', // Allow only this origin
+        methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow these HTTP methods
+        credentials: true // Allow cookies to be sent with requests
 }
 
 dotenv.config()
