@@ -38,6 +38,7 @@ app.use('/api/todos', todoRouter);
 const startServer = async () => {
     try {
         const conn = await connectDB();
+        console.log(`MongoDb connected: ${conn.connection.host}`);
         if(conn){
         app.listen(process.env.PORT, () => {
             console.log(`Server is running on port ${process.env.PORT}`);
@@ -51,19 +52,6 @@ const startServer = async () => {
 
 startServer();
 
-app.get("/checkdb", async(req, res) => {
-    try {
-           const db = connectDB();
-          if(db){
-            console.log("Connected to MongoDB");
-            res.json({ status: 'Connected to MongoDB' });
-          }
-
-    } catch (error) {
-        res.json({ status: 'Failed to connect to MongoDB', error: error.message });
-
-    }
-  });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
