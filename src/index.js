@@ -1,45 +1,53 @@
-import express from 'express'
-import dotenv from 'dotenv'
-import userRouter from './routes/userRoute.js'
-import todoRouter from './routes/todoRoute.js'
-import connectDB from './config/db/db.js'
-import cors from 'cors'
+import express from 'express';
+import dotenv from 'dotenv';
+import userRouter from './routes/userRoute.js';
+import todoRouter from './routes/todoRoute.js';
+import connectDB from './config/db/db.js';
+import cors from 'cors';
 
+dotenv.config();
 
-dotenv.config()
+const app = express();
 
-const app=express()
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-app.use(express.json())
-app.use(express.urlencoded({extended:false}))
-// app.options('*', cors(corsconfig))
-app.use(cors(
-    {
-        origin: 'http://localhost:5173', // Allow only this origin
-        methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow these HTTP methods
-        credentials: true // Allow cookies to be sent with requests
-    }
-))
+app.use(cors({
+    origin: 'http://localhost:5173', // Allow only this origin
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow these HTTP methods
+    credentials: true // Allow cookies to be sent with requests
+}));
 
+app.get('/', (req, res) => {
+    res.send('Hello, this is my Todo Application');
+});
 
+// Detailed logging middleware
+app.use((req, res, next) => {
+    const start = Date.now();
+    res.on('finish', () => {
+        const duration = Date.now() - start;
+        console.log(`${req.method} ${req.originalUrl} [${res.statusCode}] - ${duration}ms`);
+    });
+    next();
+});
 
+app.use('/api/users', userRouter);
+app.use('/api/todos', todoRouter);
 
-app.get('/',(req,res)=>{
-    res.send('Hello this is my Todo Application');
-})
+connectDB().then(() => {
+    app.listen(process.env.PORT, () => {
+        console.log(`Server is running on port ${process.env.PORT}`);
+    });
+}).catch(error => {
+    console.error('Failed to connect to the database:', error);
+    process.exit(1); // Exit the process with failure
+});
 
-app.use('/api/users',userRouter)
-app.use('/api/todos',todoRouter)
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send({ error: 'Something went wrong!' });
+});
 
-connectDB()
-
-
-app.listen(process.env.PORT,()=>{
-    console.log(`Server is running on port ${process.env.PORT}`)
-
-})
-
-export default app
-
-
-
+export default app;
