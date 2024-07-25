@@ -7,13 +7,13 @@
       "config": {
         "maxLambdaSize": "15mb",
         "memory": 512,
-        "maxDuration": 10 
+        "maxDuration": 10
       }
     }
   ],
   "routes": [
     {
-      "src": "/(.*)",
+      "src": "/api/(.*)",
       "dest": "/src/index.js",
       "methods": ["GET", "POST", "DELETE", "PUT", "PATCH", "OPTIONS"],
       "headers": {
@@ -24,5 +24,3 @@
     }
   ]
 }
-
-    
