@@ -35,21 +35,34 @@ app.get('/', (req, res) => {
 app.use('/api/users', userRouter);
 app.use('/api/todos', todoRouter);
 
-const startServer = async () => {
-    try {
-        const conn = await connectDB();
-        if(conn){
-        app.listen(8002, () => {
-            console.log(`Server is running on port ${8002}`);
+// const startServer = async () => {
+//     try {
+//         const conn = await connectDB();
+//         if(conn){
+//         app.listen(process.env.PORT, () => {
+//             console.log(`Server is running on port ${process.env.PORT}`);
         
-        })};
-    } catch (error) {
-        console.error('Failed to connect to the database:', error);
-        process.exit(1); // Exit the process with failure
-    }
-};
+//         })};
+//     } catch (error) {
+//         console.error('Failed to connect to the database:', error);
+//         process.exit(1); // Exit the process with failure
+//     }
+// };
 
-startServer();
+// startServer();
+
+app.get("/checkdb", async(req, res) => {
+    try {
+        await mongoose.connect();
+           const db = connectDB();
+           await db.command({ ping: 1 });
+           res.json({ status: 'Connected to MongoDB' });
+
+    } catch (error) {
+        res.json({ status: 'Failed to connect to MongoDB', error: error.message });
+
+    }
+  });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
