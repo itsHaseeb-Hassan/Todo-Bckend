@@ -8,10 +8,12 @@ const connectDB = async ()=>{
             useFindAndModify: false,
             useCreateIndex: true
         })
+        return conn;
         console.log(`MongoDb connected: ${conn.connection.host}`)
     } catch (error) {
         console.log(`Error:${error.message}`)
     }
+
 }
 
 export default connectDB
