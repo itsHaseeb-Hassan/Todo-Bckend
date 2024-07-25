@@ -54,8 +54,10 @@ startServer();
 app.get("/checkdb", async(req, res) => {
     try {
            const db = connectDB();
-           await db.command({ ping: 1 });
-           res.json({ status: 'Connected to MongoDB' });
+          if(db){
+            console.log("Connected to MongoDB");
+            res.json({ status: 'Connected to MongoDB' });
+          }
 
     } catch (error) {
         res.json({ status: 'Failed to connect to MongoDB', error: error.message });
