@@ -12,11 +12,23 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// CORS configuration
 app.use(cors({
     origin: 'http://localhost:5173', // Allow only this origin
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow these HTTP methods
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow these HTTP methods
+    allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true // Allow cookies to be sent with requests
 }));
+
+// Handle preflight requests
+app.options('*', cors());
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+});
 
 // Detailed logging middleware
 app.use((req, res, next) => {
@@ -37,13 +49,10 @@ app.use('/api/todos', todoRouter);
 
 const startServer = async () => {
     try {
-        const conn = await connectDB();
-        console.log(`MongoDb connected: ${conn.connection.host}`);
-        if(conn){
+        await connectDB();
         app.listen(process.env.PORT, () => {
             console.log(`Server is running on port ${process.env.PORT}`);
-        
-        })};
+        });
     } catch (error) {
         console.error('Failed to connect to the database:', error);
         process.exit(1); // Exit the process with failure
@@ -51,7 +60,6 @@ const startServer = async () => {
 };
 
 startServer();
-
 
 // Error handling middleware
 app.use((err, req, res, next) => {
