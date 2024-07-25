@@ -39,8 +39,8 @@ const startServer = async () => {
     try {
         const conn = await connectDB();
         if(conn){
-        app.listen(process.env.PORT, () => {
-            console.log(`Server is running on port ${process.env.PORT}`);
+        app.listen(8002, () => {
+            console.log(`Server is running on port ${8002}`);
         
         })};
     } catch (error) {
