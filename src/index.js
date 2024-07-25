@@ -5,11 +5,6 @@ import todoRouter from './routes/todoRoute.js'
 import connectDB from './config/db/db.js'
 import cors from 'cors'
 
-const corsconfig={
-        origin: 'http://localhost:5173', // Allow only this origin
-        methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow these HTTP methods
-        credentials: true // Allow cookies to be sent with requests
-}
 
 dotenv.config()
 
@@ -18,7 +13,13 @@ const app=express()
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 // app.options('*', cors(corsconfig))
-app.use(cors(corsconfig))
+app.use(cors(
+    {
+        origin: 'http://localhost:5173', // Allow only this origin
+        methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow these HTTP methods
+        credentials: true // Allow cookies to be sent with requests
+    }
+))
 
 
 
