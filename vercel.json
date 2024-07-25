@@ -4,7 +4,7 @@
     {
       "src": "src/index.js",
       "use": "@vercel/node",
-      "config": {
+      "functions": {
         "maxLambdaSize": "15mb",
         "memory": 512,
         "maxDuration": 30 
